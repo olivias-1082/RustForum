@@ -12,7 +12,7 @@ pub struct Reply {
     pub post_id: i32,
     pub user_id: i32,
     pub parent_comment_id: Option<i32>,
-    pub created_at: chrono::NaiveDateTime,
+    pub creation_time: chrono::NaiveDateTime,
 }
 
 #[derive(Serialize, Insertable)]
@@ -22,7 +22,7 @@ pub struct NewComment {
     pub post_id: i32,
     pub user_id: i32,
     pub parent_comment_id: Option<i32>,
-    pub created_at: chrono::NaiveDateTime,
+    pub creation_time: chrono::NaiveDateTime,
 }
 
 impl NewComment {
@@ -33,7 +33,7 @@ impl NewComment {
             post_id: post_id,
             user_id: user_id,
             parent_comment_id: parent_comment_id,
-            created_at: chrono::Local::now().naive_utc(),
+            creation_time: chrono::Local::now().naive_utc(),
         }
     }
 }
@@ -44,7 +44,7 @@ pub struct NewPost {
     pub title: String,
     pub content: String,
     pub author: i32,
-    pub created_at: chrono::NaiveDateTime,
+    pub creation_time: chrono::NaiveDateTime,
 }
 impl NewPost {
     pub fn from_post_form(title: String, content: String, uid: i32) -> Self {
@@ -52,7 +52,7 @@ impl NewPost {
             title: title,
             content: content,
             author: uid,
-            created_at: chrono::Local::now().naive_utc(),
+            creation_time: chrono::Local::now().naive_utc(),
         }
     }
 }
@@ -63,7 +63,7 @@ pub struct Post {
     pub title: String,
     pub content: Option<String>,
     pub author: i32,
-    pub created_at: chrono::NaiveDateTime,
+    pub creation_time: chrono::NaiveDateTime,
 }
 #[derive(Debug, Deserialize, Insertable)]
 #[table_name="users"]

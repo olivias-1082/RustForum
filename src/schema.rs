@@ -5,7 +5,7 @@ table! {
         post_id -> Int4,
         user_id -> Int4,
         parent_comment_id -> Nullable<Int4>,
-        created_at -> Timestamp,
+        creation_time -> Timestamp,
     }
 }
 table! {
@@ -22,7 +22,7 @@ table! {
         title -> Varchar,
         content -> Nullable<Varchar>,
         author -> Int4,
-        created_at -> Timestamp,
+        creation_time -> Timestamp,
     }
 }
 joinable!(posts -> users (author));

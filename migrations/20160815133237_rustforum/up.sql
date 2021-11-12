@@ -15,7 +15,7 @@ CREATE TABLE replies (
     post_id INT NOT NULL,
     user_id INT NOT NULL,
     parent_comment_id INT,
-    created_at TIMESTAMP NOT NULL,
+    creation_time TIMESTAMP NOT NULL,
 
     CONSTRAINT fk_post
         FOREIGN KEY(post_id)
@@ -35,7 +35,7 @@ CREATE TABLE replies (
     post_id INT NOT NULL,
     user_id INT NOT NULL,
     parent_comment_id INT,
-    created_at TIMESTAMP NOT NULL,
+    creation_time TIMESTAMP NOT NULL,
 
     CONSTRAINT fk_post
         FOREIGN KEY(post_id)
@@ -54,7 +54,7 @@ CREATE TABLE posts (
     title VARCHAR NOT NULL,
     content VARCHAR,
     author INT NOT NULL,
-    created_at TIMESTAMP NOT NULL,
+    creation_time TIMESTAMP NOT NULL,
 
     CONSTRAINT fk_author
         FOREIGN KEY(author)
