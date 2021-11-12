@@ -12,7 +12,7 @@
     <header>
         <div class="top-bar">
 
-        <h3>    Welcome to the Rustic Board! </h3>
+        <h2>    Welcome to the Rustic Board! </h2>
         <div style="float:right;">
             <button onclick="window.location.href='localhost:2000/'">
                 Home
@@ -40,17 +40,18 @@
 
 <table>
     <tr>
+        <h1 align="center"> {{ post.title }}<h1>
+
         <td>
-            <a href="{{ post.title }}">{{ post.title }}</a>
+            {{ post.content }}
+<br>
             <small>
-                <br>
                 submitted by
                 <a href="/user/{{user.username}}">
                     {{ user.username }}
                 </a> at {{post.creation_time }}
             </small>
             <br>
-            {{ post.content }}
         </td>
     </tr>
 </table>
