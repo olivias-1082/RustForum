@@ -52,7 +52,7 @@ CREATE TABLE comments (
 CREATE TABLE posts (
     id SERIAL PRIMARY KEY,
     title VARCHAR NOT NULL,
-    link VARCHAR,
+    content VARCHAR,
     author INT NOT NULL,
     created_at TIMESTAMP NOT NULL,
 

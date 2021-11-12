@@ -42,15 +42,15 @@ impl NewComment {
 
 pub struct NewPost {
     pub title: String,
-    pub link: String,
+    pub content: String,
     pub author: i32,
     pub created_at: chrono::NaiveDateTime,
 }
 impl NewPost {
-    pub fn from_post_form(title: String, link: String, uid: i32) -> Self {
+    pub fn from_post_form(title: String, content: String, uid: i32) -> Self {
         NewPost {
             title: title,
-            link: link,
+            content: content,
             author: uid,
             created_at: chrono::Local::now().naive_utc(),
         }
@@ -61,7 +61,7 @@ impl NewPost {
 pub struct Post {
     pub id: i32,
     pub title: String,
-    pub link: Option<String>,
+    pub content: Option<String>,
     pub author: i32,
     pub created_at: chrono::NaiveDateTime,
 }

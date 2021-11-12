@@ -135,7 +135,7 @@ async fn post_page(tera: web::Data<Tera>,
         .expect("Failed to find comments.");
 
     let mut data = Context::new();
-    data.insert("title", &format!("{} - HackerClone", post.title));
+    data.insert("title", &format!("{} - Welcome to the Rustic Board!", post.title));
     data.insert("post", &post);
     data.insert("user", &user);
     data.insert("comments", &comments);
@@ -152,12 +152,12 @@ async fn post_page(tera: web::Data<Tera>,
 #[derive(Debug, Deserialize)]
 struct Submission {
     title: String,
-    link: String,
+    content: String,
 }
 #[derive(Deserialize)]
 struct PostForm {
     title: String,
-    link: String,
+    content: String,
 }
 
 async fn submission(tera: web::Data<Tera>, id: Identity) -> impl Responder {
@@ -181,7 +181,7 @@ async fn process_submission(data: web::Form<PostForm>, id: Identity) -> impl Res
 
         match user {
             Ok(u) => {
-                let new_post = NewPost::from_post_form(data.title.clone(), data.link.clone(), u.id);
+                let new_post = NewPost::from_post_form(data.title.clone(), data.content.clone(), u.id);
 
                 use schema::posts;
 

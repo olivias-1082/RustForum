@@ -1,7 +1,32 @@
-{% extends "base.html" %}
-
-{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the Rustic Board!</title>
+</head>
+<body>
+    <header>
+        <h3>    Welcome to the Rustic Board! </h3>
+        <div style="float:right;">
+            <button onclick="window.location.href='/login'">
+                Login
+            </button>
+            <button onclick="window.location.href='/signup'">
+                Sign Up
+            </button>
+            <button onclick="window.location.href='/submission'">
+                Submit
+            </button>
+            <button onclick="window.location.href='/logout'">
+                Logout
+            </button>
+        </div>
+    </header>
+    <hr>
+    
 <table>
+    <h3>    Threads here   </h3>
+
     {% for post_user in posts_users %}
     {% set p = post_user[0] %}
     {% set u = post_user[1] %}
@@ -9,7 +34,7 @@
         <td>{{loop.index}}. </td>
         <td>
        
-        <a href="{{ p.link }}">{{ p.title }}</a>
+        <a href="{{ p.content }}">{{ p.title }}</a>
         <br>
         <small>
             submitted by
@@ -17,12 +42,12 @@
                 {{ u.username }}
             </a>
         </small>
+        <small>{{ p.created_at }}</small>
         <small><a href="/post/{{p.id}}">comments</a></small>
         <br>
-        <small>{{ p.created_at }}</small>
         
         </td>
     </tr>
     {% endfor %}
 </table>
-{% endblock %}
+</body>

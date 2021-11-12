@@ -20,7 +20,7 @@ table! {
     posts (id) {
         id -> Int4,
         title -> Varchar,
-        link -> Nullable<Varchar>,
+        content -> Nullable<Varchar>,
         author -> Int4,
         created_at -> Timestamp,
     }

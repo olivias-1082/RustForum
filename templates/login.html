@@ -1,6 +1,28 @@
-{% extends "base.html" %}
-
-{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the Rustic Board!</title>
+</head>
+<body>
+    <header>
+        <h3>    Welcome to the Rustic Board! </h3>
+        <div style="float:right;">
+            <button onclick="window.location.href='/login'">
+                Login
+            </button>
+            <button onclick="window.location.href='/signup'">
+                Sign Up
+            </button>
+            <button onclick="window.location.href='/submission'">
+                Submit
+            </button>
+            <button onclick="window.location.href='/logout'">
+                Logout
+            </button>
+        </div>
+    </header>
+    <hr>
 <form action="" method="POST">
     <div>
         <label for="username">Username:</label>
@@ -12,4 +34,4 @@
     </div>
     <input type="submit" value="Login">
 </form>
-{% endblock %}
+</body>

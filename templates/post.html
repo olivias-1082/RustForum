@@ -1,22 +1,55 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the Rustic Board!</title>
+</head>
+<body>
+    <header>
+        <h3>    Welcome to the Rustic Board! </h3>
+        <div style="float:right;">
+            <button onclick="window.location.href='/login'">
+                Login
+            </button>
+            <button onclick="window.location.href='/signup'">
+                Sign Up
+            </button>
+            <button onclick="window.location.href='/submission'">
+                Submit
+            </button>
+            <button onclick="window.location.href='/logout'">
+                Logout
+            </button>
+        </div>
+    </header>
+    <hr>
+<table>
+    <tr>
+        <td>
+            <a href="{{ post.content }}">{{ post.title }}</a>
+            <br>
+            <small>
+                submitted by
+                <a href="/user/{{user.username}}">
+                    {{ user.username }}
+                </a>
+            </small>
+            - {{ post.created_at }}
+        </td>
+    </tr>
+</table>
+
+
 <form action="" method="POST">
     <div>
-        <label for="comment">Comment</label>
-        <br>
+        <label for="comment">Leave a reply</label>
         <textarea name="comment"></textarea>
     </div>
     <br>
     <input type="submit" value="submit">
 </form>
 
-<br>
-{% for comment_user in comments %}
-{% set comment = comment_user[0] %}
-{% set user = comment_user[1] %}
 <div>
-    {{comment.comment}}
-    <br>
-    <small> by {{user.username}}</small>
-    <hr>
+    Our replies will go here.
 </div>
-{% endfor %}
-{% endblock %}
+</body>
