@@ -8,16 +8,19 @@
     <header>
         <h3>    Welcome to the Rustic Board! </h3>
         <div style="float:right;">
-            <button onclick="window.location.href='/login'">
+            <button onclick="window.location.href='localhost:2000/'">
+                Home
+            </button>
+            <button onclick="window.location.href='localhost:2000/login'">
                 Login
             </button>
-            <button onclick="window.location.href='/register'">
+            <button onclick="window.location.href='localhost:2000/register'">
                 Sign Up
             </button>
-            <button onclick="window.location.href='/submission'">
+            <button onclick="window.location.href='localhost:2000/submission'">
                 Submit
             </button>
-            <button onclick="window.location.href='/logout'">
+            <button onclick="window.location.href='localhost:2000/logout'">
                 Logout
             </button>
         </div>
@@ -31,7 +34,7 @@
         <input type="text" name="title">
     </div>
     <div>
-        <label for="content">Text:</label>
+        <label for="content">Post:</label>
         <input type="text" name="content">
     </div>
     <input type="submit" value="Submit">
