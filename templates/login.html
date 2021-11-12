@@ -4,8 +4,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to the Rustic Board!</title>
 </head>
-<body>
+<div class="main">
+
     <header>
+        <div class="top-bar">
         <h3>    Welcome to the Rustic Board! </h3>
         <div style="float:right;">
             <button onclick="window.location.href='localhost:2000/'">
@@ -24,7 +26,9 @@
                 Logout
             </button>
         </div>
+        </div>
     </header>
+</div>
     <hr>
 <form action="" method="POST">
     <div>
@@ -38,3 +42,45 @@
     <input type="submit" value="Login">
 </form>
 </body>
+<style>
+    body {
+        margin: 10px 60px;
+    }
+
+  
+
+    h4 {
+        margin: 0;
+    }
+
+    p {
+        margin: 5px 0;
+    }
+
+    textarea {
+        width: 80%;
+        height: 80px;
+    }
+    .comments {
+        margin: 40px 0;
+    }
+    .timestamp {
+        padding-right: 10px;
+    }
+
+    .comment {
+        margin: 20px 0;
+        padding-left: 10px;
+    }
+    .top-bar {
+        background-color: pink;
+        padding: 0 20px;
+    }
+
+    .main {
+        background-color: #F6F6EF;
+        padding: 10px 40px;
+    }
+
+ 
+</style>

@@ -1,3 +1,5 @@
+        <div class="main">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -5,7 +7,11 @@
     <title>Welcome to the Rustic Board!</title>
 </head>
 <body>
+    <div class="main">
+
     <header>
+        <div class="top-bar">
+
         <h3>    Welcome to the Rustic Board! </h3>
         <div style="float:right;">
             <button onclick="window.location.href='localhost:2000/'">
@@ -24,20 +30,23 @@
                 Logout
             </button>
         </div>
+    </div>
+
     </header>
     <hr>
 <table>
     <tr>
         <td>
-            <a href="{{ post.content }}">{{ post.title }}</a>
-            <br>
+            <a href="{{ post.title }}">{{ post.title }}</a>
             <small>
+                <br>
                 submitted by
                 <a href="/user/{{user.username}}">
                     {{ user.username }}
-                </a>
+                </a> at {{post.creation_time }}
             </small>
-            - {{ post.creation_time }}
+            <br>
+            {{ post.content }}
         </td>
     </tr>
 </table>
@@ -45,14 +54,64 @@
 
 <form action="" method="POST">
     <div>
+        <div class="comments">
+            <div class="comment">
         <label for="reply">Leave a reply</label>
-        <textarea name="reply"></textarea>
+        <div class="comment-content">
+        <textarea name="reply"></textarea>    
+    </div>
+
+    </div>
+    <input type="submit" value="Post Comment">
+</div>
     </div>
     <br>
-    <input type="submit" value="submit">
 </form>
 
 <div>
     Our replies will go here.
 </div>
+    </div>
 </body>
+<style>
+    body {
+        margin: 10px 60px;
+    }
+
+  
+
+    h4 {
+        margin: 0;
+    }
+
+    p {
+        margin: 5px 0;
+    }
+
+    textarea {
+        width: 80%;
+        height: 80px;
+    }
+    .comments {
+        margin: 40px 0;
+    }
+    .timestamp {
+        padding-right: 10px;
+    }
+
+    .comment {
+        margin: 20px 0;
+        padding-left: 10px;
+    }
+    .top-bar {
+        background-color: pink;
+        padding: 0 20px;
+    }
+
+    .main {
+        background-color: #F6F6EF;
+        padding: 10px 40px;
+    }
+
+ 
+</style>
