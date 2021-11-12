@@ -25,7 +25,7 @@
     <hr>
 <h3>{{user.username}} Profile</h3>
 
-<h5>Posts</h5>
+<h5>Threads</h5>
 <hr>
 {% for post in posts %}
 <div>
@@ -34,11 +34,11 @@
 {% endfor %}
 
 
-<h5>Comments</h5>
+<h5>Replies</h5>
 <hr>
-{% for comment in comments %}
+{% for reply in replies %}
 <div>
-    <a href="/post/{{comment.post_id}}">{{comment.comment}}</a>
+    <a href="/post/{{reply.post_id}}">{{reply.reply}}</a>
     <br>
 </div>
 {% endfor %}

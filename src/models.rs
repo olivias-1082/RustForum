@@ -1,14 +1,14 @@
 use diesel::{Queryable, Insertable};
 use serde::{Deserialize, Serialize};
-use super::schema::{users, posts, comments};
+use super::schema::{users, posts, replies};
 use dotenv::dotenv;
 use argonautica::Hasher;
 #[derive(Debug, Serialize, Queryable, Identifiable, Associations)]
 #[belongs_to(Post)]
 #[belongs_to(User)]
-pub struct Comment {
+pub struct Reply {
     pub id: i32,
-    pub comment: String,
+    pub reply: String,
     pub post_id: i32,
     pub user_id: i32,
     pub parent_comment_id: Option<i32>,
@@ -16,9 +16,9 @@ pub struct Comment {
 }
 
 #[derive(Serialize, Insertable)]
-#[table_name="comments"]
+#[table_name="replies"]
 pub struct NewComment {
-    pub comment: String,
+    pub reply: String,
     pub post_id: i32,
     pub user_id: i32,
     pub parent_comment_id: Option<i32>,
@@ -26,10 +26,10 @@ pub struct NewComment {
 }
 
 impl NewComment {
-    pub fn new(comment: String, post_id: i32,
+    pub fn new(reply: String, post_id: i32,
         user_id: i32, parent_comment_id: Option<i32>) -> Self{
         NewComment {
-            comment: comment,
+            reply: reply,
             post_id: post_id,
             user_id: user_id,
             parent_comment_id: parent_comment_id,

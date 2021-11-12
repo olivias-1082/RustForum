@@ -8,12 +8,12 @@ use serde::{Serialize, Deserialize};
 use diesel::prelude::*;
 use diesel::pg::PgConnection;
 use dotenv::dotenv;
-use models::{User, NewUser, LoginUser, Post, NewPost, Comment, NewComment};
+use models::{User, NewUser, LoginUser, Post, NewPost, Reply, NewComment};
 use actix_identity::{Identity, CookieIdentityPolicy, IdentityService};
 
 #[derive(Deserialize)]
 struct CommentForm {
-    comment: String,
+    reply: String,
 }
 #[derive(Debug)]
 enum ServerError {
@@ -60,7 +60,7 @@ impl From<diesel::result::Error> for ServerError {
         }
     }
 }
-async fn comment(
+async fn reply(
     data: web::Form<CommentForm>,
     id: Identity,
     web::Path(post_id): web::Path<i32>
@@ -81,13 +81,13 @@ async fn comment(
         match user {
             Ok(u) => {
                 let parent_id = None;
-                let new_comment = NewComment::new(data.comment.clone(), post.id, u.id, parent_id);
+                let new_comment = NewComment::new(data.reply.clone(), post.id, u.id, parent_id);
 
-                use schema::comments;
-                diesel::insert_into(comments::table)
+                use schema::replies;
+                diesel::insert_into(replies::table)
                     .values(&new_comment)
-                    .get_result::<Comment>(&connection)
-                    .expect("Error saving comment.");
+                    .get_result::<Reply>(&connection)
+                    .expect("Error saving reply.");
 
 
                 return HttpResponse::Ok().body("Commented.");
@@ -129,16 +129,16 @@ async fn post_page(tera: web::Data<Tera>,
         .get_result(&connection)
         .expect("Failed to find user.");
 
-        let comments :Vec<(Comment, User)> = Comment::belonging_to(&post)
+        let replies :Vec<(Reply, User)> = Reply::belonging_to(&post)
         .inner_join(users)
         .load(&connection)
-        .expect("Failed to find comments.");
+        .expect("Failed to find replies.");
 
     let mut data = Context::new();
     data.insert("title", &format!("{} - Welcome to the Rustic Board!", post.title));
     data.insert("post", &post);
     data.insert("user", &user);
-    data.insert("comments", &comments);
+    data.insert("replies", &replies);
 
     if let Some(_id) = id.identity() {
         data.insert("logged_in", "true");
@@ -257,20 +257,20 @@ async fn user_profile(tera: web::Data<Tera>,
         .load(&connection)
         .expect("Failed to find posts.");
 
-    let comments :Vec<Comment> = Comment::belonging_to(&user)
+    let replies :Vec<Reply> = Reply::belonging_to(&user)
         .load(&connection)
-        .expect("Failed to find comments.");
+        .expect("Failed to find replies.");
 
     let mut data = Context::new();
     data.insert("title", &format!("{} - Profile", user.username));
     data.insert("user", &user);
     data.insert("posts", &posts);
-    data.insert("comments", &comments);
+    data.insert("replies", &replies);
 
     let rendered = tera.render("profile.html", &data).unwrap();
     HttpResponse::Ok().body(rendered)
 }
-async fn process_signup(data: web::Form<NewUser>) -> impl Responder {
+async fn process_register(data: web::Form<NewUser>) -> impl Responder {
     use schema::users;
 
     let connection = establish_connection();
@@ -285,7 +285,7 @@ async fn process_signup(data: web::Form<NewUser>) -> impl Responder {
     println!("{:?}", data);
     HttpResponse::Ok().body(format!("Successfully saved user: {}", data.username))
 }
-async fn process_signup(data: web::Form<NewUser>) -> impl Responder {
+async fn process_register(data: web::Form<NewUser>) -> impl Responder {
     use schema::users;
 
     let connection = establish_connection();
@@ -344,8 +344,8 @@ async fn main() -> std::io::Result<()> {
             .data(tera)
             .data(pool.clone())
             .route("/", web::get().to(index))
-            .route("/signup", web::get().to(signup))
-            .route("/signup", web::post().to(process_signup))
+            .route("/register", web::get().to(register))
+            .route("/register", web::post().to(process_register))
             .route("/login", web::get().to(login))
             .route("/login", web::post().to(process_login))
             .route("/login", web::post().to(process_login))
@@ -356,7 +356,7 @@ async fn main() -> std::io::Result<()> {
             .service(
                 web::resource("/post/{post_id}")
                     .route(web::get().to(post_page))
-                    .route(web::post().to(comment))
+                    .route(web::post().to(reply))
             )
             .service(
                 web::resource("/user/{username}")

@@ -9,9 +9,9 @@ CREATE TABLE users (
 );
 
 
-CREATE TABLE comments (
+CREATE TABLE replies (
     id SERIAL PRIMARY KEY,
-    comment VARCHAR NOT NULL,
+    reply VARCHAR NOT NULL,
     post_id INT NOT NULL,
     user_id INT NOT NULL,
     parent_comment_id INT,
@@ -27,11 +27,11 @@ CREATE TABLE comments (
 
     CONSTRAINT fk_parent_comment
         FOREIGN KEY(parent_comment_id)
-            REFERENCES comments(id)
+            REFERENCES replies(id)
 );
-CREATE TABLE comments (
+CREATE TABLE replies (
     id SERIAL PRIMARY KEY,
-    comment VARCHAR NOT NULL,
+    reply VARCHAR NOT NULL,
     post_id INT NOT NULL,
     user_id INT NOT NULL,
     parent_comment_id INT,
@@ -47,7 +47,7 @@ CREATE TABLE comments (
 
     CONSTRAINT fk_parent_comment
         FOREIGN KEY(parent_comment_id)
-            REFERENCES comments(id)
+            REFERENCES replies(id)
 );
 CREATE TABLE posts (
     id SERIAL PRIMARY KEY,

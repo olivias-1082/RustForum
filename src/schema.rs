@@ -1,7 +1,7 @@
 table! {
-    comments (id) {
+    replies (id) {
         id -> Int4,
-        comment -> Varchar,
+        reply -> Varchar,
         post_id -> Int4,
         user_id -> Int4,
         parent_comment_id -> Nullable<Int4>,
