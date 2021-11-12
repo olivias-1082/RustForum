@@ -36,21 +36,77 @@
     <tr>
         <td>{{loop.index}}. </td>
         <td>
-       
+            <div class="header">
+
+            <h4 class="title">
+
         <a href="{{ p.content }}">{{ p.title }}</a>
+    </h4>
+</div>
+<div class="bottom">
+
         <br>
         <small>
             submitted by
             <a href="/users/{{u.username}}">
                 {{ u.username }}
-            </a>
+            </a> on
         </small>
+        
         <small>{{ p.creation_time }}</small>
-        <small><a href="/post/{{p.id}}">replies</a></small>
         <br>
+        <br>
+
+        <div class="comment-content">
+            <small><a href="/post/{{p.id}}">replies</a></small>
+        </div>
+    </div>
+
+            <br>
         
         </td>
     </tr>
     {% endfor %}
 </table>
 </body>
+<style>
+    body {
+               margin: 10px 60px;
+           }
+   
+           a {
+               text-decoration: none;
+               color: black;
+           }
+   
+           h4 {
+               margin: 0;
+           }
+   
+           p {
+               margin: 5px 0;
+           }
+   
+           .top-bar {
+               background-color: pink;
+               padding: 0 40px;
+           }
+   
+           .main {
+               background-color: #F6F6EF;
+           }
+   
+           .row {
+               padding: 5px 0;
+           }
+   
+           .bottom {
+               display: flex;
+               color: grey;
+               font-size: 16px;
+           }
+   
+           .timestamp {
+               padding-right: 10px;
+           }
+   </style>

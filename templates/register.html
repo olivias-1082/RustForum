@@ -5,7 +5,10 @@
     <title>Welcome to the Rustic Board!</title>
 </head>
 <body>
-    <header>
+    <div class="main">
+
+        <header>
+            <div class="top-bar">
         <h3>    Welcome to the Rustic Board! </h3>
         <div style="float:right;">
             <button onclick="window.location.href='localhost:2000/'">
@@ -24,21 +27,95 @@
                 Logout
             </button>
         </div>
+            </div>
     </header>
+    </div>
     <hr>
+    <div class="bottom">
+
+    <div class="w3-container">
+
+    <div class="comments">
 <form action="" method="POST">
+    <h3>    Register </h3>
+
+    <div class="comment">
+
     <div>
         <label for="username">Username:</label>
         <input type="text" name="username">
     </div>
+</div>
+<div class="comment">
+
     <div>
         <label for="email">E-mail:</label>
         <input type="email" name="email">
     </div>
+</div>
+    <div class="comment">
+    
     <div>
         <label for="password">Password:</label>
         <input type="password" name="password">
     </div>
+    </div>
+
     <input type="submit" value="Sign Up">
 </form>
+        </div></div></div></div>
 </body>
+<style>
+    body {
+        margin: 10px 80px;
+        position: relative;
+align-content: center;
+    }
+
+  
+
+    h4 {
+        margin: 0;
+    }
+
+    p {
+        margin: 5px 0;
+    }
+    .bottom,
+    .top-comment {
+        display: flex;
+        color: grey;
+align-items: center;
+position: relative;
+
+        font-size: 12px;
+    }
+
+    textarea {
+        width: 80%;
+        height: 80px;
+    }
+    .comments {
+        margin: 40px 0;
+    }
+    .timestamp {
+        padding-right: 10px;
+    }
+
+    .comment {
+        margin: 10px 0;
+        padding-left: 10px;
+        
+    }
+    .top-bar {
+        background-color: pink;
+        padding: 0 20px;
+    }
+
+    .main {
+        background-color: #F6F6EF;
+        padding: 10px 40px;
+    }
+
+ 
+</style>

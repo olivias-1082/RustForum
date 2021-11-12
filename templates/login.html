@@ -30,21 +30,39 @@
     </header>
 </div>
     <hr>
+    <div class="bottom">
+
+        <div class="w3-container">
+    
+        <div class="comments">
 <form action="" method="POST">
+    <h3>    Login </h3>
+
+    <div class="comment">
+
     <div>
         <label for="username">Username:</label>
         <input type="text" name="username">
     </div>
+    </div>
+    <div class="comment">
+
     <div>
         <label for="password">Password:</label>
         <input type="password" name="password">
     </div>
+    </div>
     <input type="submit" value="Login">
 </form>
+</div></div></div></div>
+
 </body>
+
 <style>
-    body {
-        margin: 10px 60px;
+  body {
+        margin: 10px 80px;
+        position: relative;
+align-content: center;
     }
 
   
@@ -55,6 +73,15 @@
 
     p {
         margin: 5px 0;
+    }
+    .bottom,
+    .top-comment {
+        display: flex;
+        color: grey;
+align-items: center;
+position: relative;
+
+        font-size: 12px;
     }
 
     textarea {
@@ -69,8 +96,9 @@
     }
 
     .comment {
-        margin: 20px 0;
+        margin: 10px 0;
         padding-left: 10px;
+        
     }
     .top-bar {
         background-color: pink;
@@ -82,5 +110,4 @@
         padding: 10px 40px;
     }
 
- 
-</style>
+   </style>
