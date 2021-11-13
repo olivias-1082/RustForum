@@ -30,6 +30,7 @@ async fn signup(tera: web::Data<Tera>) -> impl Responder {
 
     let rendered = tera.render("signup.html", &data).unwrap();
     HttpResponse::Ok().body(rendered)
+    
 }
 
 
@@ -84,9 +85,21 @@ async fn process_login(data: web::Form<LoginUser>) -> impl Responder {
 }
 
 
-async fn process_signup(data: web::Form<User>) -> impl Responder {
-    println!("{:?}", data);
-    HttpResponse::Ok().body(format!("Successfully saved user: {}", data.username))
+async fn process_signup(user: web::Form<User>) -> impl Responder {
+    println!("{:?}", user);
+    let rec = sqlx::query!(
+        r#"
+INSERT INTO users ( data )
+VALUES ( $1 )
+RETURNING id
+        "#,
+        user
+    )
+    .fetch_one(pool)
+    .await?;
+
+    Ok(rec.id);
+    HttpResponse::Ok().body(format!("Successfully saved user: {}", user.username))
 }
 
 #[derive(Serialize)]
