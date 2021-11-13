@@ -1,10 +1,20 @@
+
+use std::num::NonZeroU8;
+use sqlx::types::Json;
+use sqlx::postgres::PgPool;
+use structopt::StructOpt;
 #[macro_use]
 use actix_web::{HttpServer, App, web, HttpResponse, Responder};
 use tera::{Tera, Context};
 use serde::{Serialize, Deserialize};
 use actix_identity::{Identity, CookieIdentityPolicy, IdentityService};
+use std::io::{self, Read};
 
 #[derive(Debug, Deserialize)]
+struct Row {
+    id: i64,
+    User: Json<User>,
+}
 struct User {
     username: String,
     email: String,
@@ -44,9 +54,23 @@ async fn submission(tera: web::Data<Tera>) -> impl Responder {
     HttpResponse::Ok().body(rendered)
 }
 
-async fn process_submission(data: web::Form<Submission>) -> impl Responder {
+async fn process_submission(pool: &PgPool, post:web::Form<Submission>) ->  anyhow::Result<i64>{
+    let rec = sqlx::query!(
+        r#"
+INSERT INTO posts ( post )
+VALUES ( $1 )
+RETURNING id
+        "#,
+        Json(post) as _
+    )
+    .fetch_one(pool)
+    .await?;
+
+    Ok(rec.id);
     println!("{:?}", data);
+    
     HttpResponse::Ok().body(format!("Posted submission: {}", data.title))
+
 }
 async fn login(tera: web::Data<Tera>) -> impl Responder {
     let mut data = Context::new();

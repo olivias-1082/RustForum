@@ -11,3 +11,7 @@ tera = "1.5.0"
 serde = "1.0"
 actix-identity = "0.3.1"
 chrono = { version = "0.4", features = ["serde"] }
+dotenv = "0.15.0"
+paw = "1.0"
+sqlx = {version="*", features = ["postgres", "json"] }
+structopt = { version = "0.3", features = ["paw"] }
