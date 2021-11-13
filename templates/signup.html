@@ -35,33 +35,25 @@
     <div class="w3-container">
 
     <div class="comments">
-<form action="" method="POST">
-    <h1 align="center">    Register </h1>
+    {% block content %}
+    <form action="" method="POST">
+        <h1 align="center">    Register </h1>
 
-    <div class="comment">
-
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" name="username">
-    </div>
-</div>
-<div class="comment">
-
-    <div>
-        <label for="email">E-mail:</label>
-        <input type="email" name="email">
-    </div>
-</div>
-    <div class="comment">
-    
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" name="password">
-    </div>
-    </div>
-
-    <input type="submit" value="Sign Up">
-</form>
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" name="username">
+        </div>
+        <div>
+            <label for="email">E-mail:</label>
+            <input type="email" name="email">
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" name="password">
+        </div>
+        <input type="submit" value="Sign Up">
+    </form>
+    {% endblock %}
         </div></div></div></div>    </div>
 
 </body>
