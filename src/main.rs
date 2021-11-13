@@ -99,6 +99,50 @@ async fn submission(tera: web::Data<Tera>) -> impl Responder {
     let rendered = tera.render("submission.html", &data).unwrap();
     HttpResponse::Ok().body(rendered)
 }
+async fn post_page(tera: web::Data<Tera>,
+    id: Identity,
+    web::Path(post_id): web::Path<i32>
+) -> impl Responder {
+
+    let connection = establish_connection();
+
+    let post :Post = posts.find(post_id)
+        .get_result(&connection)
+        .expect("Failed to find post.");
+
+    let user :User = users.find(post.author)
+        .get_result(&connection)
+        .expect("Failed to find user.");
+
+        let replies :Vec<(Reply, User)> = Reply::belonging_to(&post)
+        .inner_join(users)
+        .load(&connection)
+        .expect("Failed to find replies.");
+
+    let mut data = Context::new();
+    data.insert("title", &format!("{} - Welcome to the Rustic Board!", post.title));
+    data.insert("post", &post);
+    data.insert("user", &user);
+    data.insert("replies", &replies);
+
+    if let Some(_id) = id.identity() {
+        data.insert("logged_in", "true");
+    } else {
+        data.insert("logged_in", "false");
+    }
+
+    let rendered = tera.render("post.html", &data).unwrap();
+    HttpResponse::Ok().body(rendered)
+}
+fn establish_connection() -> PgConnection {
+    dotenv().ok();
+
+    let database_url = std::env::var("DATABASE_URL")
+        .expect("DATABASE_URL must be set");
+
+    PgConnection::establish(&database_url)
+        .expect(&format!("Error connecting to {}", database_url))
+}
 
 async fn process_submission(post:web::Form<Submission>) ->  anyhow::Result<i64>{
     let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
@@ -190,6 +234,11 @@ async fn main() -> anyhow::Result<()> {
             .route("/login", web::post().to(process_login))
             .route("/submission", web::get().to(submission))
             .route("/submission", web::post().to(process_submission))
+            .service(
+                web::resource("/post/{post_id}")
+                    .route(web::get().to(post_page))
+                    .route(web::post().to(reply))
+            )
     .bind("localhost:2000")?
     .run()
     .await
