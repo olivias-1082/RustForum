@@ -23,7 +23,54 @@ struct LoginUser {
     username: String,
     password: String,
 }
+struct CommentForm {
+    reply: String,
+}
+async fn reply(
+    data: web::Form<CommentForm>,
+    id: Identity,
+    web::Path(post_id): web::Path<i32>
+) -> impl Responder {
 
+    let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
+    if let Some(id) = id.identity() {
+
+        let connection = pool.get()?;
+
+        let post  = posts.find(post_id)
+            .get_result(&connection)
+            .expect("Failed to find post.");
+
+            let user = users.filter(username.eq(&data.username)).first::<User>(&connection);
+        
+        match user {
+            Ok(u) => {
+                let parent_id = None;
+                let new_comment = NewComment::new(data.reply.clone(), post.id, u.id, parent_id);
+                let rec = sqlx::query!(
+                    r#"
+            INSERT INTO replies ( new_comment )
+            VALUES ( $1 )
+            RETURNING id
+                    "#,
+                    description
+                )
+                .fetch_one(pool)
+                .await?;
+            
+                
+
+                return HttpResponse::Ok().body("Commented.");
+            }
+            Err(e) => {
+                println!("{:?}", e);
+                return HttpResponse::Ok().body("User not found.");
+            }
+        }
+    }
+
+    HttpResponse::Unauthorized().body("Not logged in.")
+}
 async fn signup(tera: web::Data<Tera>) -> impl Responder {
     let mut data = Context::new();
     data.insert("title", "Sign Up");
