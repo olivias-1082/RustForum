@@ -89,7 +89,7 @@ async fn process_signup(user: web::Form<User>) -> impl Responder {
     println!("{:?}", user);
     let rec = sqlx::query!(
         r#"
-INSERT INTO users ( data )
+INSERT INTO users ( user )
 VALUES ( $1 )
 RETURNING id
         "#,
@@ -112,21 +112,17 @@ async fn index(tera: web::Data<Tera>) -> impl Responder {
     let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
 
     let mut data = Context::new();
-
-    let posts = [
-        Post {
-            title: String::from("This is the title"),
-            content: String::from("This is the content"),
-            author: String::from("Bob")
-        }
-    ];
-    
-
-    data.insert("title", "Hacker Clone");
-    data.insert("posts", &posts);
-
+    let recs = sqlx::query!(
+        r#"
+SELECT id, title, content
+FROM posts
+ORDER BY id
+        "#
+    )
+    .fetch_all(pool)
+    .await?;
     let rendered = tera.render("index.html", &data).unwrap();
-    HttpResponse::Ok().body(rendered)
+    HttpResponse::Ok().body(rendered); 
 }
 async fn logout(id: Identity) -> impl Responder {
     id.forget();
