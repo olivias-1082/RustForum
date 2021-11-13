@@ -45,15 +45,15 @@ async fn reply(
         
         match user {
             Ok(u) => {
-                let parent_id = None;
-                let new_comment = NewComment::new(data.reply.clone(), post.id, u.id, parent_id);
+                let parent_comment_id = None;
+                let new_comment = NewComment::new(data.reply.clone(), post.id, u.id, parent_comment_id);
                 let rec = sqlx::query!(
                     r#"
             INSERT INTO replies ( new_comment )
             VALUES ( $1 )
             RETURNING id
                     "#,
-                    description
+                   reply 
                 )
                 .fetch_one(pool)
                 .await?;
