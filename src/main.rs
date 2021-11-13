@@ -1,7 +1,5 @@
-
-use std::num::NonZeroU8;
-use sqlx::types::Json;
 use sqlx::postgres::PgPool;
+use std::env;
 use structopt::StructOpt;
 #[macro_use]
 use actix_web::{HttpServer, App, web, HttpResponse, Responder};
@@ -54,22 +52,23 @@ async fn submission(tera: web::Data<Tera>) -> impl Responder {
     HttpResponse::Ok().body(rendered)
 }
 
-async fn process_submission(pool: &PgPool, post:web::Form<Submission>) ->  anyhow::Result<i64>{
+async fn process_submission(post:web::Form<Submission>) ->  anyhow::Result<i64>{
+    let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
+
     let rec = sqlx::query!(
         r#"
 INSERT INTO posts ( post )
 VALUES ( $1 )
 RETURNING id
         "#,
-        Json(post) as _
+        post
     )
     .fetch_one(pool)
     .await?;
 
     Ok(rec.id);
-    println!("{:?}", data);
     
-    HttpResponse::Ok().body(format!("Posted submission: {}", data.title))
+    HttpResponse::Ok().body(format!("Posted submission: {}", post.title))
 
 }
 async fn login(tera: web::Data<Tera>) -> impl Responder {
@@ -97,6 +96,8 @@ struct Post {
     author: String,
 }
 async fn index(tera: web::Data<Tera>) -> impl Responder {
+    let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
+
     let mut data = Context::new();
 
     let posts = [
@@ -106,6 +107,7 @@ async fn index(tera: web::Data<Tera>) -> impl Responder {
             author: String::from("Bob")
         }
     ];
+    
 
     data.insert("title", "Hacker Clone");
     data.insert("posts", &posts);
@@ -117,8 +119,10 @@ async fn logout(id: Identity) -> impl Responder {
     id.forget();
     HttpResponse::Ok().body("Logged out.")
 }
+#[async_std::main]
 #[actix_web::main]
-async fn main() -> std::io::Result<()> {
+async fn main() -> anyhow::Result<()> {
+    let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
     HttpServer::new(|| {
         let tera = Tera::new("templates/**/*").unwrap();
         App::new()
